@@ -192,11 +192,23 @@ function startOwlFlight(delta){
   owl.classList.add('flying');owl.style.setProperty('--owl-tilt',`${Math.max(-9,Math.min(9,delta*.15))}deg`);
   if(!owlFrame)owlFrame=requestAnimationFrame(flyOwl);
   clearTimeout(flightTimer);clearTimeout(owlLandingTimer);
-  flightTimer=setTimeout(()=>{if(!pointOwlAtPerch()){owlTargetY=Math.max(100,innerHeight-170);owlTargetX=0;}owl.style.setProperty('--owl-tilt','0deg');if(!owlFrame)owlFrame=requestAnimationFrame(flyOwl);owlLandingTimer=setTimeout(()=>{owl.classList.remove('flying');},650);},650);
+  flightTimer=setTimeout(()=>{
+    if(!pointOwlAtPerch()){owlTargetY=Math.max(100,innerHeight-170);owlTargetX=0;}
+    owl.style.setProperty('--owl-tilt','0deg');if(!owlFrame)owlFrame=requestAnimationFrame(flyOwl);
+    owlLandingTimer=setTimeout(()=>{
+      cancelAnimationFrame(owlFrame);owlFrame=0;
+      pointOwlAtPerch();owlY=owlTargetY;owlX=owlTargetX;paintOwl();owl.classList.remove('flying');
+    },650);
+  },650);
 }
 paintOwl();
 window.addEventListener('load',()=>{if(pointOwlAtPerch()){owlY=owlTargetY;owlX=owlTargetX;paintOwl();}},{once:true});
-window.addEventListener('resize',()=>{owlTargetY=Math.max(100,innerHeight-170);owlY=owlTargetY;owlX=0;owlTargetX=0;paintOwl();},{passive:true});
+window.addEventListener('resize',()=>{
+  cancelAnimationFrame(owlFrame);owlFrame=0;clearTimeout(flightTimer);clearTimeout(owlLandingTimer);
+  owl.classList.remove('flying');owl.style.setProperty('--owl-tilt','0deg');
+  if(!pointOwlAtPerch()){owlTargetY=Math.max(100,innerHeight-170);owlTargetX=0;}
+  owlY=owlTargetY;owlX=owlTargetX;paintOwl();
+},{passive:true});
 $('#motion-toggle').addEventListener('change',()=>{if(root.classList.contains('reduce-motion')){cancelAnimationFrame(owlFrame);owlFrame=0;clearTimeout(flightTimer);clearTimeout(owlLandingTimer);owl.classList.remove('flying');owlY=Math.max(100,innerHeight-170);owlX=0;paintOwl();}});
 function sayOwl(message){if(owl.hidden)return;$('#owl-bubble').textContent=message;$('#owl-bubble').classList.add('visible');clearTimeout(owlTimer);owlTimer=setTimeout(()=>$('#owl-bubble').classList.remove('visible'),4500);}
 const owlLines=['I’m Lumi. The stars connect skills to real projects.','Curiosity is a pretty good compass.','Every project has field notes. Take a closer look.','The sun-and-moon switch changes the whole world.','Your next teammate might be one conversation away.'];let owlLine=0;
