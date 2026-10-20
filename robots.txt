@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://zubaer-habib-sayham.github.io/sitemap.xml
