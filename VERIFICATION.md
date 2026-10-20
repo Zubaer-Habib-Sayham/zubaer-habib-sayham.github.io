@@ -27,4 +27,9 @@ Passed locally in Chromium at 1440 × 900 and 390 × 844:
 - Source scan found no credentials, machine-specific paths or unwanted tool branding.
 - Browser error log was empty during interaction checks.
 
-Public deployment verification is recorded below after publication.
+Public deployment passed over HTTPS at https://zubaer-habib-sayham.github.io/:
+
+- All 20 checked pages and assets returned HTTP 200 and matched the local release, including binary comparison of the CV, fonts and images.
+- The public page was opened in the browser and its hero, portrait and navigation were verified.
+- The owl's feet and hero branch anchor aligned to within one pixel in the desktop layout.
+- Hosting serves static files directly; the portfolio needs no running application server.
